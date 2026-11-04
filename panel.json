@@ -1,9 +1,9 @@
 {
   "app_enabled": false,
   "maintenance": true,
-  "show_configs": true,
-  "show_servers": true,
-  "message": "التطبيق في وضع الصيانة حالياً، يرجى المحاولة لاحقاً.",
+  "show_configs": false,
+  "show_servers": false,
+  "message": "التطبيق في وضع الصيانة حالياً، في مفاجأة 🤌🤫",
   "server_note": "",
   "configs": [
     {
