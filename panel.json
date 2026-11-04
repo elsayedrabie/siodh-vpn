@@ -1,5 +1,5 @@
 {
-  "app_enabled": true,
+  "app_enabled": false,
   "maintenance": false,
   "show_configs": true,
   "show_servers": true,
