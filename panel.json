@@ -1,8 +1,8 @@
 {
-  "app_enabled": false,
-  "maintenance": true,
-  "show_configs": false,
-  "show_servers": false,
+  "app_enabled": true,
+  "maintenance": false,
+  "show_configs": true,
+  "show_servers": true,
   "message": "التطبيق في وضع الصيانة حالياً، يرجى المحاولة لاحقاً.",
   "server_note": "",
   "configs": [
