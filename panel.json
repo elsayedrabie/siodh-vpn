@@ -30,20 +30,11 @@
   "servers": [
     {
       "flag": "🇬🇧",
-      "name": "SIODH SERVER 1 👑",
+      "name": "SIODH SERVER 1 👑✔️",
       "host": "31.220.111.36",
       "port": 443,
       "user": "aaaa",
       "pass": "aaaa",
-      "real": true
-    },
-    {
-      "flag": "🌍",
-      "name": "SIODH SERVER 2",
-      "host": "",
-      "port": 443,
-      "user": "",
-      "pass": "",
       "real": true
     }
   ]
