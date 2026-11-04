@@ -1,6 +1,6 @@
 {
-  "app_enabled": true,
-  "maintenance": false,
+  "app_enabled": false,
+  "maintenance": true,
   "show_configs": true,
   "show_servers": true,
   "message": "التطبيق في وضع الصيانة حالياً، يرجى المحاولة لاحقاً.",
