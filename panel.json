@@ -1,8 +1,8 @@
 {
   "app_enabled": false,
-  "maintenance": false,
-  "show_configs": true,
-  "show_servers": true,
+  "maintenance": true,
+  "show_configs": false,
+  "show_servers": false,
   "message": "التطبيق في وضع الصيانة حالياً، يرجى المحاولة لاحقاً.",
   "server_note": "",
   "configs": [
@@ -17,7 +17,7 @@
       "port": 80
     },
     {
-      "name": "عمك 😂",
+      "name": "اخوك 😂",
       "headerHost": "",
       "proxyIP": "speedtestcustom.now-dns.net",
       "proxyPort": 80,
