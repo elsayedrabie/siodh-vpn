@@ -63,6 +63,24 @@
       "user": "sssss",
       "pass": "sssss",
       "real": true
+    },
+    {
+      "flag": "🇫🇷",
+      "name": "SIODH SERVER 5👑✔️",
+      "host": "46.202.154.87",
+      "port": 443,
+      "user": "siodh",
+      "pass": "siodn",
+      "real": true
+    },
+    {
+      "flag": "🇩🇪",
+      "name": "SIODH SERVER 6👑✔️",
+      "host": "179.198.203.103",
+      "port": 80,
+      "user": "siodh",
+      "pass": "siodh",
+      "real": true
     }
   ]
 }
