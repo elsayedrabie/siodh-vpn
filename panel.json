@@ -36,6 +36,15 @@
       "user": "aaaa",
       "pass": "aaaa",
       "real": false
+    },
+    {
+      "flag": "🇫🇷",
+      "name": "SIODH SERVER 2 👑✔️",
+      "host": "147.79.114.138",
+      "port": 443,
+      "user": "ssss",
+      "pass": "ssss",
+      "real": true
     }
   ]
 }
