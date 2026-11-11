@@ -981,4 +981,9 @@ window.addEventListener('beforeunload',function(e){if(state.dirty){e.preventDefa
 if(mq.addEventListener) mq.addEventListener('change',applyTheme);
 if(location.hash==='#admin') openAdmin();
 })();
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js');
+  }
+</script>
 </script></body></html>
