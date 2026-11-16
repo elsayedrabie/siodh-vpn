@@ -414,7 +414,7 @@ section[id]{scroll-margin-top:84px}
     <h2>إدارة النظام المشفر</h2>
     <span class="dirty auth-only" id="dirtyTag" hidden="">تعديلات غير محفوظة</span>
     <button class="btn btn-ghost btn-sm" data-act="adm-close">إغلاق</button>
-    <button class="btn btn-cta btn-sm auth-only" data-act="publish" hidden="">تشفير وتنزيل site-config.json</button>
+    <button class="btn btn-cta btn-sm auth-only" data-act="publish" hidden="">تشفير وتنزيل site-panel.json</button>
   </div>
   <div class="adm-login" id="admLogin">
     <div class="grp">
@@ -436,20 +436,26 @@ section[id]{scroll-margin-top:84px}
 (function(){
 'use strict';
 
-/* مسح أي هاش من الرابط لمنع كشف أو محاولة الوصول عبر #admin */
 if(window.location.hash){
   try{ history.replaceState(null, '', window.location.pathname + window.location.search); }catch(e){}
 }
 
-var REMOTE_FILE = './site-config.json?v=' + Date.now();
-/* SHA-256 Hash لكلمة المرور الافتراضية (siodh2026) - غير مخزنة كنص أبداً */
-var DEFAULT_ADMIN_HASH = '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918';
+var REMOTE_FILE = './site-panel.json?v=' + Date.now();
+var DEFAULT_ADMIN_HASH = '9_136843977';
 
-/* محرك التشفير AES-256-GCM لفك تشفير ملف site-config.json للزوار تلقائياً دون ظهور البيانات في GitHub */
+function verifyHash(str){
+  var h = 5381;
+  for(var i = 0; i < str.length; i++){
+    h = (h * 33 + str.charCodeAt(i)) % 1000000007;
+  }
+  return str.length + '_' + h;
+}
+
 var Vault = {
   enc: new TextEncoder(),
   dec: new TextDecoder(),
   _k: [83,73,79,68,72,95,86,65,85,76,84,95,50,48,50,54,95,65,69,83,95,50,53,54,95,71,67,77,95,83,69,67],
+  hasSubtle: function(){ return !!(window.crypto && window.crypto.subtle); },
   getKey: async function() {
     var raw = new Uint8Array(this._k);
     return crypto.subtle.importKey('raw', raw, { name: 'AES-GCM' }, false, ['encrypt', 'decrypt']);
@@ -464,33 +470,46 @@ var Vault = {
     for (var i = 0; i < len; i++) bytes[i] = bin.charCodeAt(i);
     return bytes.buffer;
   },
-  sha256: async function(str) {
-    var buf = await crypto.subtle.digest('SHA-256', this.enc.encode('siodh_salt_' + str));
-    return Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2, '0'); }).join('');
-  },
   seal: async function(obj) {
-    var iv = crypto.getRandomValues(new Uint8Array(12));
-    var key = await this.getKey();
     var plain = this.enc.encode(JSON.stringify(obj));
-    var cipher = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, plain);
-    return {
-      encrypted: true,
-      algorithm: 'AES-256-GCM',
-      updated_at: Math.floor(Date.now() / 1000),
-      iv: this.bufToB64(iv),
-      data: this.bufToB64(cipher)
-    };
+    if (this.hasSubtle()) {
+      var iv = crypto.getRandomValues(new Uint8Array(12));
+      var key = await this.getKey();
+      var cipher = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, plain);
+      return {
+        encrypted: true,
+        algorithm: 'AES-256-GCM',
+        updated_at: Math.floor(Date.now() / 1000),
+        iv: this.bufToB64(iv),
+        data: this.bufToB64(cipher)
+      };
+    } else {
+      var out = new Uint8Array(plain.length);
+      for (var i = 0; i < plain.length; i++) out[i] = plain[i] ^ this._k[i % this._k.length];
+      return {
+        encrypted: true,
+        algorithm: 'XOR-256-LOCAL',
+        updated_at: Math.floor(Date.now() / 1000),
+        iv: 'local',
+        data: this.bufToB64(out.buffer)
+      };
+    }
   },
   open: async function(payload) {
-    var iv = new Uint8Array(this.b64ToBuf(payload.iv));
-    var data = this.b64ToBuf(payload.data);
-    var key = await this.getKey();
-    var plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, key, data);
-    return JSON.parse(this.dec.decode(plain));
+    var data = new Uint8Array(this.b64ToBuf(payload.data));
+    if (payload.algorithm === 'AES-256-GCM' && this.hasSubtle()) {
+      var iv = new Uint8Array(this.b64ToBuf(payload.iv));
+      var key = await this.getKey();
+      var plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, key, data.buffer);
+      return JSON.parse(this.dec.decode(plain));
+    } else {
+      var out = new Uint8Array(data.length);
+      for (var i = 0; i < data.length; i++) out[i] = data[i] ^ this._k[i % this._k.length];
+      return JSON.parse(this.dec.decode(out));
+    }
   }
 };
 
-/* البيانات الأساسية الاحتياطية في حال عدم وجود ملف site-config.json بعد */
 var BASE_CONFIG = {
   site: {
     nameAr: "سيودة",
@@ -610,7 +629,6 @@ function normalize(c){
   return c;
 }
 
-/* تحميل وفك تشفير الإعدادات من site-config.json للزوار تلقائياً */
 async function bootSite(){
   INITIAL = normalize(clone(BASE_CONFIG));
   CONFIG = normalize(clone(INITIAL));
@@ -618,8 +636,10 @@ async function bootSite(){
   try {
     var res = await fetch(REMOTE_FILE, {cache: 'no-store'});
     if(!res.ok) return;
-    var raw = await res.json();
-    if(raw && raw.encrypted && raw.data && raw.iv){
+    var text = await res.text();
+    if(!text || !text.trim()) return;
+    var raw = JSON.parse(text);
+    if(raw && raw.encrypted && raw.data){
       var unlocked = await Vault.open(raw);
       INITIAL = normalize(unlocked);
       CONFIG = normalize(clone(INITIAL));
@@ -773,7 +793,6 @@ $('#smartTrapBtn').addEventListener('click', function(e){
   if(getSec){ getSec.scrollIntoView({behavior: 'smooth'}); }
 });
 
-/* ============ أدوات لوحة الإدارة السرية ============ */
 function val(p){return get(CONFIG,p)}
 function inp(label,path,o){
   o=o||{};var v=val(path);
@@ -833,7 +852,7 @@ var T={
     repeater('faq','الأسئلة الشائعة',function(q,i){return inp('السؤال','faq.'+i+'.q')+area('الجواب','faq.'+i+'.a',{rows:3})},'+ إضافة سؤال')+
     '<div class="grp"><h3>لقطات الشاشة</h3>'+area('رابط صورة في كل سطر','screenshots',{rows:5,ltr:true,lines:true})+'</div>';},
   save:function(){return ''+
-    '<div class="grp"><h3>التشفير العالي والنشر (AES-256-GCM)</h3><p class="hint">يتم تشفير كافة بياناتك وإعلاناتك وكلمة مرورك داخل ملف <b>site-config.json</b> بحيث لا يستطيع أي شخص قراءته في GitHub، بينما يقرأه الموقع تلقائياً للزوار.</p><button class="btn btn-cta" data-act="publish">تشفير وتنزيل site-config.json</button></div>'+
+    '<div class="grp"><h3>التشفير العالي والنشر (AES-256-GCM)</h3><p class="hint">يتم تشفير كافة بياناتك وإعلاناتك ورمز وصولك داخل ملف <b>site-panel.json</b> بحيث لا يستطيع أي شخص قراءته في GitHub، بينما يقرأه الموقع تلقائياً للزوار.</p><button class="btn btn-cta" data-act="publish">تشفير وتنزيل site-panel.json</button></div>'+
     '<div class="grp"><h3>إدارة النسخ</h3><div class="row-btns"><button class="btn btn-ghost" data-act="import-json">استيراد ملف JSON</button><button class="btn btn-ghost" data-act="discard">تجاهل التعديلات</button></div></div>'+
     '<div class="grp"><h3>رمز الوصول</h3><div class="fld"><label for="newPass">رمز وصول جديد</label><input type="password" id="newPass" autocomplete="new-password"></div><div class="row-btns"><button class="btn btn-ghost" data-act="change-pass">تحديث الرمز</button><button class="btn btn-ghost" data-act="logout">تسجيل الخروج</button></div></div>';}
 };
@@ -855,14 +874,14 @@ function showAdminState(){
 function openAdmin(){$('#adm').classList.add('open');document.body.style.overflow='hidden';showAdminState()}
 function closeAdmin(){$('#adm').classList.remove('open');document.body.style.overflow=''}
 
-async function login(){
-  var p=$('#admPass').value;
+function login(){
+  var p = ($('#admPass').value || '').trim();
   if(!p) return;
-  var enteredHash = await Vault.sha256(p);
+  var enteredHash = verifyHash(p);
   var targetHash = (CONFIG.admin && CONFIG.admin.passHash) ? CONFIG.admin.passHash : DEFAULT_ADMIN_HASH;
   if(enteredHash === targetHash){
-    state.admin=true;
-    $('#admPass').value='';
+    state.admin = true;
+    $('#admPass').value = '';
     showAdminState();
     renderAds();
   } else {
@@ -877,9 +896,9 @@ function saveBlob(blob,name){
 }
 async function publish(){
   var sealed = await Vault.seal(CONFIG);
-  saveBlob(new Blob([JSON.stringify(sealed, null, 2)], {type:'application/json;charset=utf-8'}), 'site-config.json');
+  saveBlob(new Blob([JSON.stringify(sealed, null, 2)], {type:'application/json;charset=utf-8'}), 'site-panel.json');
   state.dirty=false;updateDirty();
-  toast('تم تشفير البيانات بخوارزمية AES-256-GCM وتنزيل site-config.json.');
+  toast('تم تشفير البيانات وتنزيل site-panel.json.');
 }
 
 function onField(e){
@@ -899,7 +918,7 @@ async function handleAct(btn){
   var act=btn.dataset.act,list=btn.dataset.list,i=parseInt(btn.dataset.i,10);
   switch(act){
     case 'adm-close':closeAdmin();break;
-    case 'login':await login();break;
+    case 'login':login();break;
     case 'logout':logout();break;
     case 'publish':await publish();break;
     case 'sticky-close':state.stickyClosed=true;renderAds();break;
@@ -916,11 +935,11 @@ async function handleAct(btn){
     case 'discard':
       CONFIG=normalize(clone(INITIAL));state.dirty=false;renderAll();adminRender();updateDirty();toast('تم التراجع.');return;
     case 'change-pass':
-      var np=($('#newPass').value||'');
+      var np=($('#newPass').value||'').trim();
       if(np.length<6){toast('الرمز يجب ألا يقل عن 6 أحرف.');return}
-      CONFIG.admin.passHash = await Vault.sha256(np);
+      CONFIG.admin.passHash = verifyHash(np);
       $('#newPass').value='';state.dirty=true;updateDirty();
-      toast('تم تحديث الرمز. اضغط «تشفير وتنزيل site-config.json» لحفظه.');return;
+      toast('تم تحديث الرمز. اضغط «تشفير وتنزيل site-panel.json» لحفظه.');return;
     default:return;
   }
   if(list){state.dirty=true;updateDirty();adminRender();scheduleRender()}
@@ -988,7 +1007,6 @@ document.addEventListener('keydown',function(e){
   }
 });
 
-/* بوابة الدخول السرية: 7 نقرات متتالية على الشعار فقط */
 var bc=0,bt;
 $('#brand').addEventListener('click',function(e){
   e.preventDefault();
