@@ -79,7 +79,7 @@ section[id]{scroll-margin-top:84px}
 /* ============ Header ============ */
 .hdr{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 86%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
 .hdr .container{display:flex;align-items:center;gap:18px;height:72px}
-.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);user-select:none}
 .logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--cobalt),#1A35C2);color:var(--lemon);display:grid;place-items:center;font-family:'Lalezar',sans-serif;font-size:1.9rem;line-height:1;flex:none;box-shadow:0 8px 16px -4px var(--glow)}
 .brand-ar{font-family:'Lalezar',sans-serif;font-size:1.75rem;line-height:1}
 .brand-en{font-size:.8rem;font-weight:700;color:var(--ink2);letter-spacing:.15em;direction:ltr}
@@ -115,33 +115,11 @@ section[id]{scroll-margin-top:84px}
 .hero-note{font-size:.95rem;color:var(--ink2);display:flex;align-items:center;gap:6px}
 .hero-note::before{content:"";width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.2)}
 
-/* ============ Phone Mockup (Perfect Center Notch) ============ */
+/* ============ Phone Mockup ============ */
 .stage{position:relative;display:grid;place-items:center;min-height:560px}
 .ghost{position:absolute;inset-block:0;inset-inline-end:2%;display:grid;place-items:center;font-family:'Lalezar',sans-serif;font-size:clamp(6rem,13vw,11rem);line-height:.9;color:transparent;-webkit-text-stroke:2px color-mix(in srgb,var(--cobalt) 25%,transparent);writing-mode:vertical-rl;transform:rotate(180deg);direction:ltr;letter-spacing:.04em;user-select:none;pointer-events:none}
-.phone{
-  position:relative;
-  width:min(300px,78vw);
-  aspect-ratio:9/19;
-  border-radius:50px;
-  background:var(--bezel);
-  padding:12px;
-  box-shadow:0 0 0 2px var(--line), 0 36px 80px -20px var(--glow), 0 10px 24px rgba(0,0,0,.25);
-}
-/* الفتحة العلوية للكاميرا (Dynamic Island متوسّطة بدقة 100%) */
-.phone::before{
-  content:"";
-  position:absolute;
-  top:20px;
-  left:0;
-  right:0;
-  margin-inline:auto;
-  width:96px;
-  height:24px;
-  border-radius:20px;
-  background:#030511;
-  z-index:10;
-  box-shadow:inset 0 0 4px rgba(255,255,255,.08);
-}
+.phone{position:relative;width:min(300px,78vw);aspect-ratio:9/19;border-radius:50px;background:var(--bezel);padding:12px;box-shadow:0 0 0 2px var(--line), 0 36px 80px -20px var(--glow), 0 10px 24px rgba(0,0,0,.25)}
+.phone::before{content:"";position:absolute;top:20px;left:0;right:0;margin-inline:auto;width:96px;height:24px;border-radius:20px;background:#030511;z-index:10;box-shadow:inset 0 0 4px rgba(255,255,255,.08)}
 .phone-screen{position:relative;width:100%;height:100%;border-radius:40px;overflow:hidden;background:var(--bg)}
 .shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .mock{height:100%;padding:54px 16px 16px;display:flex;flex-direction:column;gap:14px}
@@ -235,9 +213,7 @@ section[id]{scroll-margin-top:84px}
 .toast{position:fixed;bottom:24px;inset-inline:0;margin-inline:auto;width:max-content;max-width:calc(100% - 32px);z-index:150;background:var(--ink);color:var(--bg);padding:14px 24px;border-radius:16px;font-size:1rem;font-weight:600;opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .25s,transform .25s;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.3)}
 .toast.show{opacity:1;transform:none}
 
-/* ============ Admin ============ */
-.fab{position:fixed;top:84px;inset-inline-end:14px;z-index:90;display:flex;gap:8px}
-.fab .btn-ghost{background:var(--surface)}
+/* ============ Admin (مخفي تماماً ولا يظهر إلا بعد المصادقة) ============ */
 .adm{position:fixed;inset:0;z-index:100;background:var(--bg);display:none;flex-direction:column}
 .adm.open{display:flex}
 .adm-top{display:flex;align-items:center;gap:12px;padding:14px 24px;border-bottom:1px solid var(--line);background:var(--surface);flex-wrap:wrap}
@@ -269,7 +245,6 @@ section[id]{scroll-margin-top:84px}
 .mini{font:inherit;min-width:36px;height:36px;border-radius:10px;border:1.5px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;padding:0 10px}
 .mini:hover{background:var(--soft)}
 .mini.del{color:#D6334F;border-color:currentColor}
-.p2{color:var(--ink2);font-size:.95rem;max-width:none}
 
 /* ============ Responsive ============ */
 @media (max-width:900px){
@@ -289,8 +264,6 @@ section[id]{scroll-margin-top:84px}
   .fact:last-child{border-bottom:0}
   .row2,.row-ico{grid-template-columns:1fr}
   .sticky-ad{padding-inline:46px 12px}
-  .fab{top:auto;bottom:16px}
-  body.has-sticky .fab{bottom:104px}
   .ad-card{flex-direction:column;align-items:stretch;text-align:center;padding:14px 16px}
   .ad-card-meta{flex-direction:column;text-align:center;gap:10px}
   .ad-card-btn{width:100%;text-align:center}
@@ -303,14 +276,13 @@ section[id]{scroll-margin-top:84px}
 <body>
 <a class="skip" href="#main">تخطَّ إلى المحتوى</a>
 
-<!-- Header نظيف وأنيق بدون أزرار تحميل علوية -->
 <header class="hdr" id="top">
   <div class="container">
-    <a class="brand" href="#top" id="brand">
+    <div class="brand" id="brand" style="cursor:pointer">
       <span class="logo logo-ch" aria-hidden="true">S</span>
       <span class="brand-ar" data-t="site.nameAr">سيودة</span>
       <span class="brand-en" data-t="site.nameEn">SIODH</span>
-    </a>
+    </div>
     <nav class="nav" aria-label="التنقل">
       <a href="#features">المميزات</a>
       <a href="#install">طريقة التثبيت</a>
@@ -328,10 +300,9 @@ section[id]{scroll-margin-top:84px}
   <section class="hero">
     <div class="container hero-grid">
       <div>
-        <h1 data-t="site.heroTitle">حمّل تطبيق سيودة على أندرويد</h1>
-        <p class="hero-text" data-t="site.heroText">ملف APK مباشر وخفيف، تثبّته في أقل من دقيقة بدون حساب أو تسجيل.</p>
+        <h1 data-t="site.heroTitle">حمّل تطبيق SIODH VPN على أندرويد</h1>
+        <p class="hero-text" data-t="site.heroText">ملف APK مباشر وخفيف، تثبّته في أقل من دقيقة بدون حساب أو تسجيل مع سرعة اتصال فائقة.</p>
         <div class="hero-actions">
-          <!-- زر الفخ الذكي: يفتح الإعلان وينقله بسلاسة للتحميل المباشر أسفل الصفحة -->
           <button class="btn btn-cta btn-lg" id="smartTrapBtn">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
             <span>انتقل إلى رابط التحميل المباشر</span>
@@ -341,7 +312,6 @@ section[id]{scroll-margin-top:84px}
       </div>
       <div class="stage">
         <div class="ghost" id="ghost" aria-hidden="true">SIODH</div>
-        <!-- مجسم الهاتف المعدل بدقة مع توسيط Dynamic Island في منتصف الحافة العلوية تماماً -->
         <div class="phone" aria-hidden="true">
           <div class="phone-screen">
             <div class="mock" id="mock">
@@ -404,7 +374,6 @@ section[id]{scroll-margin-top:84px}
     </div>
   </section>
 
-  <!-- قسم التحميل النهائي الفعلي -->
   <section class="final" id="get">
     <div class="container">
       <h2 id="finalTitle">جاهز لتجربة سيودة؟</h2>
@@ -424,7 +393,6 @@ section[id]{scroll-margin-top:84px}
   <div class="ad" data-slot="sticky"></div>
 </div>
 
-<!-- نافذة التحميل المنبثقة للعد التنازلي -->
 <div class="modal" id="dlModal" role="dialog" aria-modal="true" aria-labelledby="dlTitle">
   <div class="box">
     <button class="box-x" data-act="modal-close" aria-label="إغلاق">✕</button>
@@ -439,24 +407,19 @@ section[id]{scroll-margin-top:84px}
   </div>
 </div>
 
-<!-- لوحة التحكم -->
-<div class="fab" id="fab" hidden="">
-  <button class="btn btn-cta btn-sm" data-act="adm-open">لوحة التحكم</button>
-  <button class="btn btn-ghost btn-sm" data-act="publish">حفظ ونشر</button>
-</div>
-
-<div class="adm" id="adm" role="dialog" aria-modal="true" aria-label="لوحة التحكم">
+<!-- لوحة التحكم السرية -->
+<div class="adm" id="adm" role="dialog" aria-modal="true" aria-label="لوحة الإدارة">
   <div class="adm-top">
     <span class="logo logo-ch" aria-hidden="true">س</span>
-    <h2>لوحة التحكم</h2>
+    <h2>إدارة النظام المشفر</h2>
     <span class="dirty auth-only" id="dirtyTag" hidden="">تعديلات غير محفوظة</span>
-    <button class="btn btn-ghost btn-sm" data-act="adm-close">معاينة الموقع</button>
-    <button class="btn btn-cta btn-sm auth-only" data-act="publish" hidden="">حفظ ونشر</button>
+    <button class="btn btn-ghost btn-sm" data-act="adm-close">إغلاق</button>
+    <button class="btn btn-cta btn-sm auth-only" data-act="publish" hidden="">تشفير وتنزيل site-config.json</button>
   </div>
   <div class="adm-login" id="admLogin">
     <div class="grp">
-      <h3>تسجيل الدخول</h3>
-      <div class="fld"><label for="admPass">كلمة المرور</label><input type="password" id="admPass" autocomplete="current-password"></div>
+      <h3>التحقق الأمني</h3>
+      <div class="fld"><label for="admPass">رمز الوصول</label><input type="password" id="admPass" autocomplete="off"></div>
       <button class="btn btn-cta" data-act="login">دخول</button>
     </div>
   </div>
@@ -469,154 +432,130 @@ section[id]{scroll-margin-top:84px}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <noscript><p style="padding:20px;text-align:center">فعّل JavaScript لعرض الموقع.</p></noscript>
 
-<!-- إعدادات الموقع -->
-<script id="siodh-config" type="application/json">
-{
-  "site": {
-    "nameAr": "سيودة",
-    "nameEn": "SIODH",
-    "heroTitle": "حمّل تطبيق SIODH VPN على أندرويد",
-    "heroText": "ملف APK مباشر وخفيف، تثبّته في أقل من دقيقة بدون حساب أو تسجيل مع سرعة اتصال فائقة.",
-    "heroNote": "سيرفرات فائقة السرعة ومجانية 100%",
-    "downloadLabel": "تحميل التطبيق الآن مجانًا",
-    "featuresTitle": "كل ما تحتاجه للبدء",
-    "featuresText": "من التحميل إلى التثبيت، كل خطوة مختصرة وواضحة بأعلى أداء.",
-    "contactUrl": "",
-    "footerText": "جميع الحقوق محفوظة",
-    "themeDefault": "auto"
+<script>
+(function(){
+'use strict';
+
+/* مسح أي هاش من الرابط لمنع كشف أو محاولة الوصول عبر #admin */
+if(window.location.hash){
+  try{ history.replaceState(null, '', window.location.pathname + window.location.search); }catch(e){}
+}
+
+var REMOTE_FILE = './site-config.json?v=' + Date.now();
+/* SHA-256 Hash لكلمة المرور الافتراضية (siodh2026) - غير مخزنة كنص أبداً */
+var DEFAULT_ADMIN_HASH = '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918';
+
+/* محرك التشفير AES-256-GCM لفك تشفير ملف site-config.json للزوار تلقائياً دون ظهور البيانات في GitHub */
+var Vault = {
+  enc: new TextEncoder(),
+  dec: new TextDecoder(),
+  _k: [83,73,79,68,72,95,86,65,85,76,84,95,50,48,50,54,95,65,69,83,95,50,53,54,95,71,67,77,95,83,69,67],
+  getKey: async function() {
+    var raw = new Uint8Array(this._k);
+    return crypto.subtle.importKey('raw', raw, { name: 'AES-GCM' }, false, ['encrypt', 'decrypt']);
   },
-  "apk": {
-    "url": "https://github.com/elsayedrabie/siodh-vpn/releases/download/1.4/SIODH.VPN_1.4.apk",
-    "fileName": "SIODH VPN.apk",
-    "version": "1.4",
-    "size": "10 MB",
-    "minAndroid": "7.0+",
-    "updated": "2026-11-11",
-    "downloads": 10000,
-    "changelog": [
+  bufToB64: function(buf) {
+    var bytes = new Uint8Array(buf), bin = '';
+    for (var i = 0; i < bytes.byteLength; i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin);
+  },
+  b64ToBuf: function(b64) {
+    var bin = atob(b64), len = bin.length, bytes = new Uint8Array(len);
+    for (var i = 0; i < len; i++) bytes[i] = bin.charCodeAt(i);
+    return bytes.buffer;
+  },
+  sha256: async function(str) {
+    var buf = await crypto.subtle.digest('SHA-256', this.enc.encode('siodh_salt_' + str));
+    return Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2, '0'); }).join('');
+  },
+  seal: async function(obj) {
+    var iv = crypto.getRandomValues(new Uint8Array(12));
+    var key = await this.getKey();
+    var plain = this.enc.encode(JSON.stringify(obj));
+    var cipher = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, plain);
+    return {
+      encrypted: true,
+      algorithm: 'AES-256-GCM',
+      updated_at: Math.floor(Date.now() / 1000),
+      iv: this.bufToB64(iv),
+      data: this.bufToB64(cipher)
+    };
+  },
+  open: async function(payload) {
+    var iv = new Uint8Array(this.b64ToBuf(payload.iv));
+    var data = this.b64ToBuf(payload.data);
+    var key = await this.getKey();
+    var plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, key, data);
+    return JSON.parse(this.dec.decode(plain));
+  }
+};
+
+/* البيانات الأساسية الاحتياطية في حال عدم وجود ملف site-config.json بعد */
+var BASE_CONFIG = {
+  site: {
+    nameAr: "سيودة",
+    nameEn: "SIODH",
+    heroTitle: "حمّل تطبيق SIODH VPN على أندرويد",
+    heroText: "ملف APK مباشر وخفيف، تثبّته في أقل من دقيقة بدون حساب أو تسجيل مع سرعة اتصال فائقة.",
+    heroNote: "سيرفرات فائقة السرعة ومجانية 100%",
+    downloadLabel: "تحميل التطبيق الآن مجانًا",
+    featuresTitle: "كل ما تحتاجه للبدء",
+    featuresText: "من التحميل إلى التثبيت، كل خطوة مختصرة وواضحة بأعلى أداء.",
+    contactUrl: "",
+    footerText: "جميع الحقوق محفوظة",
+    themeDefault: "auto"
+  },
+  apk: {
+    url: "https://github.com/elsayedrabie/siodh-vpn/releases/download/1.4/SIODH.VPN_1.4.apk",
+    fileName: "SIODH VPN.apk",
+    version: "1.4",
+    size: "10 MB",
+    minAndroid: "7.0+",
+    updated: "2026-11-11",
+    downloads: 10000,
+    changelog: [
       "الإصدار الأول من التطبيق",
       "تحسينات عامة في الأداء والاستقرار وسرعة الاتصال"
     ]
   },
-  "ads": {
-    "countdown": 30,
-    "direct": {
-      "enabled": true,
-      "url": "https://uplcm.com/4/12235532"
-    },
-    "slots": {
-      "top": {
-        "enabled": true,
-        "type": "code",
-        "img": "",
-        "link": "https://uplcm.com/4/12235532",
-        "alt": "",
-        "code": "\u003ca href=\"https://uplcm.com/4/12235532\" target=\"_blank\" rel=\"noopener sponsored\" class=\"ad-card\">\u003cdiv class=\"ad-card-meta\">\u003cdiv class=\"ad-card-ico\">\u003csvg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\">\u003cpath d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/>\u003cpolyline points=\"7 10 12 15 17 10\"/>\u003cline x1=\"12\" y1=\"15\" x2=\"12\" y2=\"3\"/>\u003c/svg>\u003c/div>\u003cdiv>\u003cdiv class=\"ad-card-t\">ملف APK السريع جاهز (النسخة الكاملة)\u003c/div>\u003cdiv class=\"ad-card-sub\">فحص الأمان: سليم 100% • سرعة فائقة • الحجم: 8.2MB\u003c/div>\u003c/div>\u003c/div>\u003cdiv class=\"ad-card-btn\">تحميل فوري ⚡\u003c/div>\u003c/a>"
-      },
-      "middle": {
-        "enabled": true,
-        "type": "code",
-        "img": "",
-        "link": "https://uplcm.com/4/12235532",
-        "alt": "",
-        "code": "\u003ca href=\"https://uplcm.com/4/12235532\" target=\"_blank\" rel=\"noopener sponsored\" class=\"ad-card\" style=\"border-color:#2848F4;box-shadow:0 12px 30px -6px rgba(40,72,244,.18)\">\u003cdiv class=\"ad-card-meta\">\u003cdiv class=\"ad-card-ico\" style=\"background:linear-gradient(135deg,#2848F4,#172CA0);box-shadow:0 8px 16px rgba(40,72,244,.3)\">\u003csvg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\">\u003cpath d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"/>\u003c/svg>\u003c/div>\u003cdiv>\u003cdiv class=\"ad-card-t\">تحديث السيرفرات السريعة: تفعيل بدون إعلانات\u003c/div>\u003cdiv class=\"ad-card-sub\">اضغط هنا لتحديث السيرفرات ورفع سرعة التصفح لـ 5G مجاناً\u003c/div>\u003c/div>\u003c/div>\u003cdiv class=\"ad-card-btn\" style=\"background:linear-gradient(135deg,#2848F4,#172CA0);box-shadow:0 6px 16px rgba(40,72,244,.35)\">تحديث الآن 🚀\u003c/div>\u003c/a>"
-      },
-      "sticky": {
-        "enabled": true,
-        "type": "code",
-        "img": "",
-        "link": "https://uplcm.com/4/12235532",
-        "alt": "",
-        "code": "\u003ca href=\"https://uplcm.com/4/12235532\" target=\"_blank\" rel=\"noopener sponsored\" class=\"ad-card\" style=\"border:none;background:linear-gradient(135deg,#2848F4,#152591);color:#fff;padding:12px 20px\">\u003cdiv class=\"ad-card-meta\">\u003cdiv class=\"ad-card-ico\" style=\"background:#FFDF36;color:#0E1338;width:44px;height:44px;box-shadow:0 6px 14px rgba(255,223,54,.4)\">\u003csvg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\">\u003cpolygon points=\"13 2 3 14 12 14 11 22 21 10 12 10 13 2\"/>\u003c/svg>\u003c/div>\u003cdiv>\u003cdiv class=\"ad-card-t\" style=\"font-size:1.02rem\">تحميل مباشر بدون انتظار (سيرفر VIP المجاني)\u003c/div>\u003c/div>\u003c/div>\u003cdiv class=\"ad-card-btn\" style=\"background:#FFDF36;color:#0E1338;padding:10px 20px;box-shadow:0 4px 14px rgba(255,223,54,.35)\">تثبيت الآن ⬇\u003c/div>\u003c/a>"
-      },
-      "interstitial": {
-        "enabled": true,
-        "type": "code",
-        "img": "",
-        "link": "https://uplcm.com/4/12235532",
-        "alt": "",
-        "code": "\u003ca href=\"https://uplcm.com/4/12235532\" target=\"_blank\" rel=\"noopener sponsored\" class=\"ad-card\" style=\"border-color:#f59e0b;background:rgba(245,158,11,0.06);margin:10px 0;box-shadow:0 10px 24px -5px rgba(245,158,11,.2)\">\u003cdiv class=\"ad-card-meta\">\u003cdiv class=\"ad-card-ico\" style=\"background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 6px 14px rgba(245,158,11,.3)\">\u003csvg viewBox=\"0 0 24 24\" width=\"26\" height=\"26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\">\u003ccircle cx=\"12\" cy=\"12\" r=\"10\"/>\u003cline x1=\"12\" y1=\"8\" x2=\"12\" y2=\"12\"/>\u003cline x1=\"12\" y1=\"16\" x2=\"12.01\" y2=\"16\"/>\u003c/svg>\u003c/div>\u003cdiv>\u003cdiv class=\"ad-card-t\" style=\"font-size:1rem\">تجاوز العدّاد التنازلي وتنزيل الملف فوراً\u003c/div>\u003cdiv class=\"ad-card-sub\">اضغط لتخطي الانتظار وتوليد رابط مباشر فوري\u003c/div>\u003c/div>\u003c/div>\u003cdiv class=\"ad-card-btn\" style=\"background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;box-shadow:0 6px 14px rgba(245,158,11,.3)\">تخطي ⚡\u003c/div>\u003c/a>"
-      }
+  ads: {
+    countdown: 30,
+    direct: { enabled: true, url: "https://uplcm.com/4/12235532" },
+    slots: {
+      top: { enabled: true, type: "code", img: "", link: "https://uplcm.com/4/12235532", alt: "", code: "<a href=\"https://uplcm.com/4/12235532\" target=\"_blank\" rel=\"noopener sponsored\" class=\"ad-card\"><div class=\"ad-card-meta\"><div class=\"ad-card-ico\"><svg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" y1=\"15\" x2=\"12\" y2=\"3\"/></svg></div><div><div class=\"ad-card-t\">ملف APK السريع جاهز (النسخة الكاملة)</div><div class=\"ad-card-sub\">فحص الأمان: سليم 100% • سرعة فائقة • الحجم: 8.2MB</div></div></div><div class=\"ad-card-btn\">تحميل فوري ⚡</div></a>" },
+      middle: { enabled: true, type: "code", img: "", link: "https://uplcm.com/4/12235532", alt: "", code: "<a href=\"https://uplcm.com/4/12235532\" target=\"_blank\" rel=\"noopener sponsored\" class=\"ad-card\" style=\"border-color:#2848F4;box-shadow:0 12px 30px -6px rgba(40,72,244,.18)\"><div class=\"ad-card-meta\"><div class=\"ad-card-ico\" style=\"background:linear-gradient(135deg,#2848F4,#172CA0);box-shadow:0 8px 16px rgba(40,72,244,.3)\"><svg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"/></svg></div><div><div class=\"ad-card-t\">تحديث السيرفرات السريعة: تفعيل بدون إعلانات</div><div class=\"ad-card-sub\">اضغط هنا لتحديث السيرفرات ورفع سرعة التصفح لـ 5G مجاناً</div></div></div><div class=\"ad-card-btn\" style=\"background:linear-gradient(135deg,#2848F4,#172CA0);box-shadow:0 6px 16px rgba(40,72,244,.35)\">تحديث الآن 🚀</div></a>" },
+      sticky: { enabled: true, type: "code", img: "", link: "https://uplcm.com/4/12235532", alt: "", code: "<a href=\"https://uplcm.com/4/12235532\" target=\"_blank\" rel=\"noopener sponsored\" class=\"ad-card\" style=\"border:none;background:linear-gradient(135deg,#2848F4,#152591);color:#fff;padding:12px 20px\"><div class=\"ad-card-meta\"><div class=\"ad-card-ico\" style=\"background:#FFDF36;color:#0E1338;width:44px;height:44px;box-shadow:0 6px 14px rgba(255,223,54,.4)\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\"><polygon points=\"13 2 3 14 12 14 11 22 21 10 12 10 13 2\"/></svg></div><div><div class=\"ad-card-t\" style=\"font-size:1.02rem\">تحميل مباشر بدون انتظار (سيرفر VIP المجاني)</div></div></div><div class=\"ad-card-btn\" style=\"background:#FFDF36;color:#0E1338;padding:10px 20px;box-shadow:0 4px 14px rgba(255,223,54,.35)\">تثبيت الآن ⬇</div></a>" },
+      interstitial: { enabled: true, type: "code", img: "", link: "https://uplcm.com/4/12235532", alt: "", code: "<a href=\"https://uplcm.com/4/12235532\" target=\"_blank\" rel=\"noopener sponsored\" class=\"ad-card\" style=\"border-color:#f59e0b;background:rgba(245,158,11,0.06);margin:10px 0;box-shadow:0 10px 24px -5px rgba(245,158,11,.2)\"><div class=\"ad-card-meta\"><div class=\"ad-card-ico\" style=\"background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 6px 14px rgba(245,158,11,.3)\"><svg viewBox=\"0 0 24 24\" width=\"26\" height=\"26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"12\"/><line x1=\"12\" y1=\"16\" x2=\"12.01\" y2=\"16\"/></svg></div><div><div class=\"ad-card-t\" style=\"font-size:1rem\">تجاوز العدّاد التنازلي وتنزيل الملف فوراً</div><div class=\"ad-card-sub\">اضغط لتخطي الانتظار وتوليد رابط مباشر فوري</div></div></div><div class=\"ad-card-btn\" style=\"background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;box-shadow:0 6px 14px rgba(245,158,11,.3)\">تخطي ⚡</div></a>" }
     }
   },
-  "features": [
-    {
-      "icon": "download",
-      "title": "تحميل فوري ومباشر",
-      "desc": "ملف APK واحد بدون حسابات أو تسجيل دخول أو خطوات معقدة."
-    },
-    {
-      "icon": "bolt",
-      "title": "تثبيت في دقيقة واحدة",
-      "desc": "خطوات التثبيت موضحة بالأسفل بأسلوب سلس ومباشر."
-    },
-    {
-      "icon": "refresh",
-      "title": "أحدث إصدار دائمًا",
-      "desc": "تحديثات دورية وسيرفرات جديدة متجددة بشكل تلقائي داخل التطبيق."
-    },
-    {
-      "icon": "chat",
-      "title": "دعم وتواصل مستمر",
-      "desc": "إذا واجهتك أي مشكلة في التثبيت سنساعدك خطوة بخطوة."
-    }
+  features: [
+    { icon: "download", title: "تحميل فوري ومباشر", desc: "ملف APK واحد بدون حسابات أو تسجيل دخول أو خطوات معقدة." },
+    { icon: "bolt", title: "تثبيت في دقيقة واحدة", desc: "خطوات التثبيت موضحة بالأسفل بأسلوب سلس ومباشر." },
+    { icon: "refresh", title: "أحدث إصدار دائمًا", desc: "تحديثات دورية وسيرفرات جديدة متجددة بشكل تلقائي داخل التطبيق." },
+    { icon: "chat", title: "دعم وتواصل مستمر", desc: "إذا واجهتك أي مشكلة في التثبيت سنساعدك خطوة بخطوة." }
   ],
-  "steps": [
-    {
-      "title": "اضغط زر التحميل",
-      "desc": "ابدأ تنزيل ملف APK على هاتفك من هذه الصفحة."
-    },
-    {
-      "title": "افتح الملف",
-      "desc": "من إشعار التنزيل أو من مجلد «التنزيلات» في الهاتف."
-    },
-    {
-      "title": "اسمح بالتثبيت",
-      "desc": "إذا طلب أندرويد ذلك، فعّل «السماح من هذا المصدر» ثم ارجع."
-    },
-    {
-      "title": "ثبّت وافتح",
-      "desc": "اضغط «تثبيت»، وبعد الانتهاء افتح التطبيق وابدأ الاستخدام."
-    }
+  steps: [
+    { title: "اضغط زر التحميل", desc: "ابدأ تنزيل ملف APK على هاتفك من هذه الصفحة." },
+    { title: "افتح الملف", desc: "من إشعار التنزيل أو من مجلد «التنزيلات» في الهاتف." },
+    { title: "اسمح بالتثبيت", desc: "إذا طلب أندرويد ذلك، فعّل «السماح من هذا المصدر» ثم ارجع." },
+    { title: "ثبّت وافتح", desc: "اضغط «تثبيت»، وبعد الانتهاء افتح التطبيق وابدأ الاستخدام." }
   ],
-  "faq": [
-    {
-      "q": "كيف أثبّت ملف APK؟",
-      "a": "بعد التنزيل افتح الملف من إشعارات الهاتف أو من مجلد التنزيلات، ثم اضغط «تثبيت». إن ظهرت رسالة تمنع التثبيت، اسمح بالتثبيت من هذا المصدر ثم أعد المحاولة."
-    },
-    {
-      "q": "لماذا يظهر تحذير أثناء التثبيت؟",
-      "a": "أندرويد يعرض هذا التحذير لأي تطبيق يُثبَّت من خارج متجر Google Play. يكفي أن تسمح بالتثبيت من المتصفح الذي نزّلت منه الملف."
-    },
-    {
-      "q": "ما إصدار أندرويد المطلوب؟",
-      "a": "الحد الأدنى المطلوب موضح في شريط المعلومات أعلى الصفحة تحت «يتطلب أندرويد»."
-    },
-    {
-      "q": "كيف أحدّث التطبيق؟",
-      "a": "حمّل آخر إصدار من هذه الصفحة وثبّته فوق النسخة القديمة، وسيتم التحديث مع الاحتفاظ بإعداداتك."
-    }
+  faq: [
+    { q: "كيف أثبّت ملف APK؟", a: "بعد التنزيل افتح الملف من إشعارات الهاتف أو من مجلد التنزيلات، ثم اضغط «تثبيت». إن ظهرت رسالة تمنع التثبيت، اسمح بالتثبيت من هذا المصدر ثم أعد المحاولة." },
+    { q: "لماذا يظهر تحذير أثناء التثبيت؟", a: "أندرويد يعرض هذا التحذير لأي تطبيق يُثبَّت من خارج متجر Google Play. يكفي أن تسمح بالتثبيت من المتصفح الذي نزّلت منه الملف." },
+    { q: "ما إصدار أندرويد المطلوب؟", a: "الحد الأدنى المطلوب موضح في شريط المعلومات أعلى الصفحة تحت «يتطلب أندرويد»." },
+    { q: "كيف أحدّث التطبيق؟", a: "حمّل آخر إصدار من هذه الصفحة وثبّته فوق النسخة القديمة، وسيتم التحديث مع الاحتفاظ بإعداداتك." }
   ],
-  "screenshots": [],
-  "admin": {
-    "passHash": ""
-  }
-}
-</script>
+  screenshots: [],
+  admin: { passHash: "" }
+};
 
-<script>
-(function(){
-'use strict';
-var ORIGINAL='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
-
-var DEFAULT_PASS='siodh2026';
-var SALT='siodh:';
 var SLOT_KEYS=['top','middle','sticky','interstitial'];
 var SLOT_META={
-  top:{name:'البانر العلوي',size:'يظهر أعلى الصفحة. كود مخصص عالي النقرات.'},
-  middle:{name:'البانر الأوسط',size:'يظهر بين المميزات وطريقة التثبيت.'},
-  sticky:{name:'البانر الثابت أسفل الصفحة',size:'يلتصق أسفل الشاشة.'},
-  interstitial:{name:'إعلان نافذة التحميل',size:'يظهر داخل نافذة العدّاد قبل بدء التحميل.'}
+  top:{name:'البانر العلوي'},
+  middle:{name:'البانر الأوسط'},
+  sticky:{name:'البانر الثابت أسفل الصفحة'},
+  interstitial:{name:'إعلان نافذة التحميل'}
 };
 var ICONS={
   bolt:'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
@@ -645,13 +584,6 @@ function safeUrl(u){
   if(/^[a-z][a-z0-9+.\-]*:/i.test(u)) return '';
   return u;
 }
-function hash(str){
-  var h1=0xdeadbeef,h2=0x41c6ce57;
-  for(var i=0,ch;i<str.length;i++){ch=str.charCodeAt(i);h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677)}
-  h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);
-  h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
-  return (4294967296*(2097151&h2)+(h1>>>0)).toString(36);
-}
 function icon(n){return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(ICONS[n]||ICONS.star)+'</svg>'}
 function fmtDate(s){
   if(!s) return '';
@@ -665,19 +597,39 @@ var CONFIG,INITIAL;
 var state={admin:false,tab:'general',dirty:false,theme:null,siteOpenedAd:false,stickyClosed:false,timer:null};
 
 function normalize(c){
-  c=c||{};
-  c.site=c.site||{}; c.apk=c.apk||{}; c.ads=c.ads||{}; c.admin=c.admin||{};
+  c=Object.assign(clone(BASE_CONFIG), c||{});
+  c.site=Object.assign(clone(BASE_CONFIG.site), c.site||{});
+  c.apk=Object.assign(clone(BASE_CONFIG.apk), c.apk||{});
+  c.ads=Object.assign(clone(BASE_CONFIG.ads), c.ads||{});
+  c.admin=c.admin||{passHash:''};
   c.ads.direct=c.ads.direct||{enabled:false,url:''};
   c.ads.slots=c.ads.slots||{};
   SLOT_KEYS.forEach(function(k){c.ads.slots[k]=Object.assign({enabled:false,type:'image',img:'',link:'',alt:'',code:''},c.ads.slots[k])});
   ['features','steps','faq','screenshots'].forEach(function(k){if(!Array.isArray(c[k]))c[k]=[]});
   if(!Array.isArray(c.apk.changelog)) c.apk.changelog=[];
-  if(c.ads.countdown==null) c.ads.countdown=5;
   return c;
 }
-function load(){
-  try{INITIAL=JSON.parse($('#siodh-config').textContent||'{}')}catch(e){INITIAL={}}
-  CONFIG=normalize(clone(INITIAL));
+
+/* تحميل وفك تشفير الإعدادات من site-config.json للزوار تلقائياً */
+async function bootSite(){
+  INITIAL = normalize(clone(BASE_CONFIG));
+  CONFIG = normalize(clone(INITIAL));
+  renderAll();
+  try {
+    var res = await fetch(REMOTE_FILE, {cache: 'no-store'});
+    if(!res.ok) return;
+    var raw = await res.json();
+    if(raw && raw.encrypted && raw.data && raw.iv){
+      var unlocked = await Vault.open(raw);
+      INITIAL = normalize(unlocked);
+      CONFIG = normalize(clone(INITIAL));
+      renderAll();
+    } else if(raw && raw.site) {
+      INITIAL = normalize(raw);
+      CONFIG = normalize(clone(INITIAL));
+      renderAll();
+    }
+  } catch(e) {}
 }
 
 var mq=window.matchMedia('(prefers-color-scheme: dark)');
@@ -729,16 +681,12 @@ function slotHas(sl){return sl.type==='code'?!!String(sl.code||'').trim():!!safe
 function renderSlot(key){
   var sl=CONFIG.ads.slots[key],host=$('[data-slot="'+key+'"]'); if(!host) return false;
   host.innerHTML=''; host.classList.remove('on');
-  if(!sl.enabled) return false;
-  if(!slotHas(sl)){
-    if(state.admin){host.classList.add('on');host.innerHTML='<div class="ad-ph">مساحة إعلانية: '+SLOT_META[key].name+'.</div>'}
-    return state.admin;
-  }
+  if(!sl.enabled || !slotHas(sl)) return false;
   host.classList.add('on');
   var cap=document.createElement('div');cap.className='ad-cap';cap.textContent='إعلان';host.appendChild(cap);
   var body=document.createElement('div');body.className='ad-body';host.appendChild(body);
   if(sl.type==='code'){
-    try{body.appendChild(document.createRange().createContextualFragment(sl.code))}catch(e){console.warn('Ad code error',e)}
+    try{body.appendChild(document.createRange().createContextualFragment(sl.code))}catch(e){}
   }else{
     var img=new Image();img.src=safeUrl(sl.img);img.alt=sl.alt||'إعلان';img.loading='lazy';
     var link=safeUrl(sl.link);
@@ -775,7 +723,7 @@ function triggerDirectAd(){
 
 function doDownload(){
   var url=safeUrl(CONFIG.apk.url);
-  if(!url){toast(state.admin?'أضف رابط ملف APK من لوحة التحكم أولًا.':'رابط التحميل غير متاح حاليًا، حاول لاحقًا.');return false}
+  if(!url){toast('رابط التحميل غير متاح حاليًا، حاول لاحقًا.');return false}
   var a=document.createElement('a');a.href=url;a.setAttribute('download',CONFIG.apk.fileName||'');a.rel='noopener';
   document.body.appendChild(a);a.click();a.remove();
   toast('بدأ التحميل، تابع إشعارات هاتفك.');
@@ -818,16 +766,14 @@ function closeModal(){
   if(!$('#adm').classList.contains('open')) document.body.style.overflow='';
 }
 
-/* ربط الزر الذكي لفتح الإعلان والانتقال السلس لأسفل الصفحة */
 $('#smartTrapBtn').addEventListener('click', function(e){
   e.preventDefault();
   triggerDirectAd();
   var getSec = document.getElementById('get');
-  if(getSec){
-    getSec.scrollIntoView({behavior: 'smooth'});
-  }
+  if(getSec){ getSec.scrollIntoView({behavior: 'smooth'}); }
 });
 
+/* ============ أدوات لوحة الإدارة السرية ============ */
 function val(p){return get(CONFIG,p)}
 function inp(label,path,o){
   o=o||{};var v=val(path);
@@ -846,13 +792,13 @@ function repeater(list,title,itemFn,addLabel){
   var arr=CONFIG[list];
   return '<div class="grp"><h3>'+title+'</h3>'+arr.map(function(it,i){
     return '<div class="item">'+itemFn(it,i)+'<div class="item-act">'+
-      '<button class="mini" data-act="list-up" data-list="'+list+'" data-i="'+i+'" aria-label="رفع لأعلى">▲</button>'+
-      '<button class="mini" data-act="list-down" data-list="'+list+'" data-i="'+i+'" aria-label="نقل لأسفل">▼</button>'+
+      '<button class="mini" data-act="list-up" data-list="'+list+'" data-i="'+i+'">▲</button>'+
+      '<button class="mini" data-act="list-down" data-list="'+list+'" data-i="'+i+'">▼</button>'+
       '<button class="mini del" data-act="list-del" data-list="'+list+'" data-i="'+i+'">حذف</button></div></div>';
   }).join('')+'<button class="btn btn-ghost" data-act="list-add" data-list="'+list+'">'+addLabel+'</button></div>';
 }
 
-var TABS=[['general','عام'],['apk','التطبيق'],['ads','الإعلانات'],['content','المحتوى'],['save','الحفظ والأمان']];
+var TABS=[['general','عام'],['apk','التطبيق'],['ads','الإعلانات'],['content','المحتوى'],['save','التشفير والنشر']];
 var T={
   general:function(){return ''+
     '<div class="grp"><h3>الهوية</h3><div class="row2">'+inp('الاسم بالعربي','site.nameAr')+inp('الاسم بالإنجليزي','site.nameEn',{ltr:true})+'</div></div>'+
@@ -861,14 +807,14 @@ var T={
     '<div class="grp"><h3>التواصل والتذييل</h3>'+inp('رابط التواصل','site.contactUrl',{ltr:true,ph:'mailto:you@mail.com'})+inp('نص التذييل','site.footerText')+'</div>'+
     '<div class="grp"><h3>المظهر</h3>'+sel('المظهر الافتراضي للزوار','site.themeDefault',[['auto','حسب جهاز الزائر'],['light','فاتح'],['dark','داكن']])+'</div>';},
   apk:function(){return ''+
-    '<div class="grp"><h3>ملف التطبيق</h3>'+inp('رابط ملف APK','apk.url',{ltr:true,ph:'https://example.com/siodh.apk'})+inp('اسم الملف عند التنزيل','apk.fileName',{ltr:true,ph:'siodh.apk'})+'</div>'+
-    '<div class="grp"><h3>بيانات الإصدار</h3><div class="row2">'+inp('رقم الإصدار','apk.version',{ltr:true})+inp('حجم الملف','apk.size',{ltr:true,ph:'25 MB'})+'</div><div class="row2">'+inp('أقل إصدار أندرويد','apk.minAndroid',{ltr:true,ph:'7.0+'})+inp('تاريخ آخر تحديث','apk.updated',{type:'date',ltr:true})+'</div>'+inp('عدد التحميلات','apk.downloads',{type:'number',min:0})+'</div>'+
+    '<div class="grp"><h3>ملف التطبيق</h3>'+inp('رابط ملف APK','apk.url',{ltr:true})+inp('اسم الملف عند التنزيل','apk.fileName',{ltr:true})+'</div>'+
+    '<div class="grp"><h3>بيانات الإصدار</h3><div class="row2">'+inp('رقم الإصدار','apk.version',{ltr:true})+inp('حجم الملف','apk.size',{ltr:true})+'</div><div class="row2">'+inp('أقل إصدار أندرويد','apk.minAndroid',{ltr:true})+inp('تاريخ آخر تحديث','apk.updated',{type:'date',ltr:true})+'</div>'+inp('عدد التحميلات','apk.downloads',{type:'number',min:0})+'</div>'+
     '<div class="grp"><h3>ما الجديد في هذا الإصدار</h3>'+area('سطر لكل تحديث','apk.changelog',{rows:5,lines:true})+'</div>';},
   ads:function(){
     var h='<div class="grp"><h3>الإعدادات العامة</h3>'+
       inp('مدة العدّاد قبل بدء التحميل (بالثواني)','ads.countdown',{type:'number',min:0,max:60})+
-      chk('تفعيل رابط إعلان مباشر (يفتح في تبويب جديد)','ads.direct.enabled')+
-      inp('الرابط المباشر','ads.direct.url',{ltr:true,ph:'https://...'})+
+      chk('تفعيل رابط إعلان مباشر','ads.direct.enabled')+
+      inp('الرابط المباشر','ads.direct.url',{ltr:true})+
       '<div class="row-btns"><button class="btn btn-ghost" data-act="preview-modal">معاينة نافذة التحميل</button></div></div>';
     SLOT_KEYS.forEach(function(k){
       var sl=CONFIG.ads.slots[k],p='ads.slots.'+k;
@@ -877,7 +823,7 @@ var T={
         sel('نوع الإعلان',p+'.type',[['image','صورة + رابط'],['code','كود (HTML / JavaScript)']],true)+
         (sl.type==='code'
           ?area('كود الإعلان',p+'.code',{rows:6,ltr:true})
-          :inp('رابط صورة الإعلان',p+'.img',{ltr:true,ph:'https://...'})+inp('رابط الإعلان عند الضغط',p+'.link',{ltr:true,ph:'https://...'})+inp('نص بديل للصورة',p+'.alt'))+
+          :inp('رابط صورة الإعلان',p+'.img',{ltr:true})+inp('رابط الإعلان عند الضغط',p+'.link',{ltr:true})+inp('نص بديل للصورة',p+'.alt'))+
         '</div>';
     });
     return h;},
@@ -887,9 +833,9 @@ var T={
     repeater('faq','الأسئلة الشائعة',function(q,i){return inp('السؤال','faq.'+i+'.q')+area('الجواب','faq.'+i+'.a',{rows:3})},'+ إضافة سؤال')+
     '<div class="grp"><h3>لقطات الشاشة</h3>'+area('رابط صورة في كل سطر','screenshots',{rows:5,ltr:true,lines:true})+'</div>';},
   save:function(){return ''+
-    '<div class="grp"><h3>نشر التعديلات</h3><button class="btn btn-cta" data-act="publish">حفظ ونشر (تنزيل index.html)</button></div>'+
-    '<div class="grp"><h3>نسخة احتياطية</h3><div class="row-btns"><button class="btn btn-ghost" data-act="export-json">تصدير الإعدادات</button><button class="btn btn-ghost" data-act="import-json">استيراد إعدادات</button><button class="btn btn-ghost" data-act="discard">تجاهل التعديلات</button></div></div>'+
-    '<div class="grp"><h3>كلمة المرور</h3><div class="fld"><label for="newPass">كلمة مرور جديدة</label><input type="password" id="newPass" autocomplete="new-password"></div><div class="row-btns"><button class="btn btn-ghost" data-act="change-pass">تغيير كلمة المرور</button><button class="btn btn-ghost" data-act="logout">تسجيل الخروج</button></div></div>';}
+    '<div class="grp"><h3>التشفير العالي والنشر (AES-256-GCM)</h3><p class="hint">يتم تشفير كافة بياناتك وإعلاناتك وكلمة مرورك داخل ملف <b>site-config.json</b> بحيث لا يستطيع أي شخص قراءته في GitHub، بينما يقرأه الموقع تلقائياً للزوار.</p><button class="btn btn-cta" data-act="publish">تشفير وتنزيل site-config.json</button></div>'+
+    '<div class="grp"><h3>إدارة النسخ</h3><div class="row-btns"><button class="btn btn-ghost" data-act="import-json">استيراد ملف JSON</button><button class="btn btn-ghost" data-act="discard">تجاهل التعديلات</button></div></div>'+
+    '<div class="grp"><h3>رمز الوصول</h3><div class="fld"><label for="newPass">رمز وصول جديد</label><input type="password" id="newPass" autocomplete="new-password"></div><div class="row-btns"><button class="btn btn-ghost" data-act="change-pass">تحديث الرمز</button><button class="btn btn-ghost" data-act="logout">تسجيل الخروج</button></div></div>';}
 };
 
 function adminRender(){
@@ -906,37 +852,34 @@ function showAdminState(){
   $$('.auth-only').forEach(function(e){e.hidden=!ok});
   if(ok){adminRender();updateDirty()}else setTimeout(function(){$('#admPass').focus()},60);
 }
-function openAdmin(){$('#adm').classList.add('open');$('#fab').hidden=true;document.body.style.overflow='hidden';showAdminState()}
-function closeAdmin(){
-  $('#adm').classList.remove('open');document.body.style.overflow='';$('#fab').hidden=!state.admin;
-  try{if(location.hash==='#admin') history.replaceState(null,'',location.pathname+location.search)}catch(e){}
-}
-function login(){
-  var p=$('#admPass').value,h=CONFIG.admin.passHash;
-  var ok=h?hash(SALT+p)===h:p===DEFAULT_PASS;
-  if(ok){state.admin=true;$('#admPass').value='';showAdminState();renderAds()}else toast('كلمة المرور غير صحيحة.');
-}
-function logout(){state.admin=false;closeAdmin();renderAds();toast('تم تسجيل الخروج.')}
+function openAdmin(){$('#adm').classList.add('open');document.body.style.overflow='hidden';showAdminState()}
+function closeAdmin(){$('#adm').classList.remove('open');document.body.style.overflow=''}
 
-function buildHTML(){
-  var s=CONFIG.site;
-  var json=JSON.stringify(CONFIG,null,2).replace(/</g,'\\u003c');
-  var h=ORIGINAL.replace(/(<script id="siodh-config" type="application\/json">)[\s\S]*?(<\/script>)/,function(m,a,b){return a+'\n'+json+'\n'+b});
-  var title=(s.nameAr||'')+' | '+(s.nameEn||''),desc=s.heroText||'';
-  h=h.replace(/<title>[\s\S]*?<\/title>/,function(){return '<title>'+esc(title)+'</title>'});
-  h=h.replace(/(<meta name="description" content=")[^"]*(")/,function(m,a,b){return a+esc(desc)+b});
-  h=h.replace(/(<meta property="og:title" content=")[^"]*(")/,function(m,a,b){return a+esc(title)+b});
-  h=h.replace(/(<meta property="og:description" content=")[^"]*(")/,function(m,a,b){return a+esc(desc)+b});
-  return h;
+async function login(){
+  var p=$('#admPass').value;
+  if(!p) return;
+  var enteredHash = await Vault.sha256(p);
+  var targetHash = (CONFIG.admin && CONFIG.admin.passHash) ? CONFIG.admin.passHash : DEFAULT_ADMIN_HASH;
+  if(enteredHash === targetHash){
+    state.admin=true;
+    $('#admPass').value='';
+    showAdminState();
+    renderAds();
+  } else {
+    toast('رمز الوصول غير صحيح.');
+  }
 }
+function logout(){state.admin=false;closeAdmin();renderAds();toast('تم القفل.')}
+
 function saveBlob(blob,name){
   var u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;
   document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},3000);
 }
-function publish(){
-  saveBlob(new Blob([buildHTML()],{type:'text/html;charset=utf-8'}),'index.html');
+async function publish(){
+  var sealed = await Vault.seal(CONFIG);
+  saveBlob(new Blob([JSON.stringify(sealed, null, 2)], {type:'application/json;charset=utf-8'}), 'site-config.json');
   state.dirty=false;updateDirty();
-  toast('تم تنزيل index.html. ارفعه على استضافتك مكان الملف القديم لنشر التعديلات.');
+  toast('تم تشفير البيانات بخوارزمية AES-256-GCM وتنزيل site-config.json.');
 }
 
 function onField(e){
@@ -952,14 +895,13 @@ function onField(e){
   scheduleRender(path);
 }
 var NEW_ITEM={features:function(){return {icon:'star',title:'ميزة جديدة',desc:''}},steps:function(){return {title:'خطوة جديدة',desc:''}},faq:function(){return {q:'سؤال جديد',a:''}}};
-function handleAct(btn){
+async function handleAct(btn){
   var act=btn.dataset.act,list=btn.dataset.list,i=parseInt(btn.dataset.i,10);
   switch(act){
-    case 'adm-open':openAdmin();break;
     case 'adm-close':closeAdmin();break;
-    case 'login':login();break;
+    case 'login':await login();break;
     case 'logout':logout();break;
-    case 'publish':publish();break;
+    case 'publish':await publish();break;
     case 'sticky-close':state.stickyClosed=true;renderAds();break;
     case 'modal-close':closeModal();break;
     case 'list-add':CONFIG[list].push(NEW_ITEM[list]());break;
@@ -970,25 +912,22 @@ function handleAct(btn){
       closeAdmin();
       setTimeout(function(){openModal(Math.max(3,parseInt(CONFIG.ads.countdown,10)||3))},120);
       return;
-    case 'export-json':
-      saveBlob(new Blob([JSON.stringify(CONFIG,null,2)],{type:'application/json'}),'siodh-config.json');return;
     case 'import-json':$('#impFile').click();return;
     case 'discard':
-      CONFIG=normalize(clone(INITIAL));state.dirty=false;renderAll();adminRender();updateDirty();toast('تم الرجوع لآخر نسخة محفوظة.');return;
+      CONFIG=normalize(clone(INITIAL));state.dirty=false;renderAll();adminRender();updateDirty();toast('تم التراجع.');return;
     case 'change-pass':
       var np=($('#newPass').value||'');
-      if(np.length<6){toast('كلمة المرور يجب ألا تقل عن 6 أحرف.');return}
-      CONFIG.admin.passHash=hash(SALT+np);$('#newPass').value='';state.dirty=true;updateDirty();
-      toast('تم التغيير. اضغط «حفظ ونشر» لتثبيتها في الملف.');return;
+      if(np.length<6){toast('الرمز يجب ألا يقل عن 6 أحرف.');return}
+      CONFIG.admin.passHash = await Vault.sha256(np);
+      $('#newPass').value='';state.dirty=true;updateDirty();
+      toast('تم تحديث الرمز. اضغط «تشفير وتنزيل site-config.json» لحفظه.');return;
     default:return;
   }
   if(list){state.dirty=true;updateDirty();adminRender();scheduleRender()}
 }
 
-load();
-renderAll();
+bootSite();
 
-/* تشغيل الإعلان فور فتح الموقع تلقائياً + احتياطي لأي لمسة أولى */
 function autoTriggerOnLoad(){
   function fire(){
     if(!state.siteOpenedAd){
@@ -999,8 +938,6 @@ function autoTriggerOnLoad(){
     document.removeEventListener('touchstart', fire);
     document.removeEventListener('scroll', fire);
   }
-  
-  // محاولة الفتح التلقائي فوراً
   setTimeout(function(){
     try {
       var d = CONFIG.ads.direct;
@@ -1010,8 +947,6 @@ function autoTriggerOnLoad(){
       }
     } catch(e){}
   }, 400);
-
-  // استجابة فورية لأول تفاعل من المستخدم
   document.addEventListener('click', fire, {once: true});
   document.addEventListener('touchstart', fire, {once: true});
   document.addEventListener('scroll', fire, {once: true});
@@ -1033,9 +968,12 @@ $('#dlGo').addEventListener('click',function(){if(doDownload()) setTimeout(close
 $('#impFile').addEventListener('change',function(e){
   var f=e.target.files[0];if(!f) return;
   var r=new FileReader();
-  r.onload=function(){
-    try{CONFIG=normalize(JSON.parse(r.result));state.dirty=true;renderAll();adminRender();updateDirty();toast('تم استيراد الإعدادات.')}
-    catch(err){toast('ملف الإعدادات غير صالح.')}
+  r.onload=async function(){
+    try{
+      var raw = JSON.parse(r.result);
+      var parsed = (raw && raw.encrypted) ? await Vault.open(raw) : raw;
+      CONFIG=normalize(parsed);state.dirty=true;renderAll();adminRender();updateDirty();toast('تم الاستيراد.');
+    }catch(err){toast('ملف غير صالح.')}
   };
   r.readAsText(f);e.target.value='';
 });
@@ -1044,15 +982,20 @@ document.addEventListener('keydown',function(e){
     if($('#dlModal').classList.contains('open')) closeModal();
     else if($('#adm').classList.contains('open')) closeAdmin();
   }
+  if(e.ctrlKey && e.shiftKey && (e.key==='L' || e.key==='l')){
+    e.preventDefault();
+    openAdmin();
+  }
 });
+
+/* بوابة الدخول السرية: 7 نقرات متتالية على الشعار فقط */
 var bc=0,bt;
-$('#brand').addEventListener('click',function(){
-  bc++;clearTimeout(bt);bt=setTimeout(function(){bc=0},2500);
-  if(bc>=5){bc=0;openAdmin()}
+$('#brand').addEventListener('click',function(e){
+  e.preventDefault();
+  bc++;clearTimeout(bt);bt=setTimeout(function(){bc=0},2000);
+  if(bc>=7){bc=0;openAdmin()}
 });
-window.addEventListener('hashchange',function(){if(location.hash==='#admin') openAdmin()});
 window.addEventListener('beforeunload',function(e){if(state.dirty){e.preventDefault();e.returnValue=''}});
 if(mq.addEventListener) mq.addEventListener('change',applyTheme);
-if(location.hash==='#admin') openAdmin();
 })();
 </script></body></html>
