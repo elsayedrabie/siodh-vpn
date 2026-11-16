@@ -213,7 +213,7 @@ section[id]{scroll-margin-top:84px}
 .toast{position:fixed;bottom:24px;inset-inline:0;margin-inline:auto;width:max-content;max-width:calc(100% - 32px);z-index:150;background:var(--ink);color:var(--bg);padding:14px 24px;border-radius:16px;font-size:1rem;font-weight:600;opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .25s,transform .25s;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.3)}
 .toast.show{opacity:1;transform:none}
 
-/* ============ Admin (مخفي تماماً ولا يظهر إلا بعد المصادقة) ============ */
+/* ============ Admin (مخفي تماماً) ============ */
 .adm{position:fixed;inset:0;z-index:100;background:var(--bg);display:none;flex-direction:column}
 .adm.open{display:flex}
 .adm-top{display:flex;align-items:center;gap:12px;padding:14px 24px;border-bottom:1px solid var(--line);background:var(--surface);flex-wrap:wrap}
@@ -414,7 +414,7 @@ section[id]{scroll-margin-top:84px}
     <h2>إدارة النظام المشفر</h2>
     <span class="dirty auth-only" id="dirtyTag" hidden="">تعديلات غير محفوظة</span>
     <button class="btn btn-ghost btn-sm" data-act="adm-close">إغلاق</button>
-    <button class="btn btn-cta btn-sm auth-only" data-act="publish" hidden="">تشفير وتنزيل site-panel.json</button>
+    <button class="btn btn-cta btn-sm auth-only" id="topPublishBtn" data-act="publish" hidden="">تشفير ورفع إلى GitHub 🚀</button>
   </div>
   <div class="adm-login" id="admLogin">
     <div class="grp">
@@ -449,6 +449,33 @@ function verifyHash(str){
     h = (h * 33 + str.charCodeAt(i)) % 1000000007;
   }
   return str.length + '_' + h;
+}
+
+/* إعدادات الرفع المباشر لـ GitHub محفوظة في المتصفح المحلي فقط */
+var GH_STORE_KEY = 'siodh_gh_cfg';
+function getGhCfg(){
+  try {
+    var d = JSON.parse(localStorage.getItem(GH_STORE_KEY) || '{}');
+    return {
+      owner: d.owner || 'elsayedrabie',
+      repo: d.repo || 'siodh-vpn',
+      branch: d.branch || 'main',
+      path: d.path || 'site-panel.json',
+      token: d.token || ''
+    };
+  } catch(e){
+    return { owner: 'elsayedrabie', repo: 'siodh-vpn', branch: 'main', path: 'site-panel.json', token: '' };
+  }
+}
+function saveGhCfg(cfg){
+  try { localStorage.setItem(GH_STORE_KEY, JSON.stringify(cfg)); } catch(e){}
+}
+
+function utf8ToBase64(str){
+  var bytes = new TextEncoder().encode(str);
+  var bin = '';
+  for(var i = 0; i < bytes.byteLength; i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin);
 }
 
 var Vault = {
@@ -610,10 +637,10 @@ function fmtDate(s){
   try{return d.toLocaleDateString('ar-EG-u-nu-latn',{year:'numeric',month:'long',day:'numeric'})}catch(e){return s}
 }
 var toastT;
-function toast(msg){var t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show')},3600)}
+function toast(msg){var t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show')},4200)}
 
 var CONFIG,INITIAL;
-var state={admin:false,tab:'general',dirty:false,theme:null,siteOpenedAd:false,stickyClosed:false,timer:null};
+var state={admin:false,tab:'general',dirty:false,theme:null,siteOpenedAd:false,stickyClosed:false,timer:null,uploading:false};
 
 function normalize(c){
   c=Object.assign(clone(BASE_CONFIG), c||{});
@@ -817,7 +844,7 @@ function repeater(list,title,itemFn,addLabel){
   }).join('')+'<button class="btn btn-ghost" data-act="list-add" data-list="'+list+'">'+addLabel+'</button></div>';
 }
 
-var TABS=[['general','عام'],['apk','التطبيق'],['ads','الإعلانات'],['content','المحتوى'],['save','التشفير والنشر']];
+var TABS=[['general','عام'],['apk','التطبيق'],['ads','الإعلانات'],['content','المحتوى'],['save','التشفير والرفع']];
 var T={
   general:function(){return ''+
     '<div class="grp"><h3>الهوية</h3><div class="row2">'+inp('الاسم بالعربي','site.nameAr')+inp('الاسم بالإنجليزي','site.nameEn',{ltr:true})+'</div></div>'+
@@ -851,10 +878,27 @@ var T={
     repeater('steps','خطوات التثبيت',function(s,i){return inp('العنوان','steps.'+i+'.title')+area('الشرح','steps.'+i+'.desc',{rows:2})},'+ إضافة خطوة')+
     repeater('faq','الأسئلة الشائعة',function(q,i){return inp('السؤال','faq.'+i+'.q')+area('الجواب','faq.'+i+'.a',{rows:3})},'+ إضافة سؤال')+
     '<div class="grp"><h3>لقطات الشاشة</h3>'+area('رابط صورة في كل سطر','screenshots',{rows:5,ltr:true,lines:true})+'</div>';},
-  save:function(){return ''+
-    '<div class="grp"><h3>التشفير العالي والنشر (AES-256-GCM)</h3><p class="hint">يتم تشفير كافة بياناتك وإعلاناتك ورمز وصولك داخل ملف <b>site-panel.json</b> بحيث لا يستطيع أي شخص قراءته في GitHub، بينما يقرأه الموقع تلقائياً للزوار.</p><button class="btn btn-cta" data-act="publish">تشفير وتنزيل site-panel.json</button></div>'+
+  save:function(){
+    var gh = getGhCfg();
+    return ''+
+    '<div class="grp"><h3>الربط المباشر مع GitHub (يُحفظ في متصفحك فقط)</h3>'+
+      '<p class="hint">أدخل رمز GitHub مرة واحدة وسيتم تشفير ملف <b>site-panel.json</b> ورفعه مباشرة إلى مستودعك بضغطة زر دون تنزيل أي ملفات.</p>'+
+      '<div class="fld"><label for="ghToken">GitHub Token (Fine-grained / Classic)</label><input type="password" id="ghToken" class="ltr" dir="ltr" placeholder="github_pat_..." value="'+esc(gh.token)+'"></div>'+
+      '<div class="row2">'+
+        '<div class="fld"><label for="ghOwner">اسم المستخدم</label><input type="text" id="ghOwner" class="ltr" dir="ltr" value="'+esc(gh.owner)+'"></div>'+
+        '<div class="fld"><label for="ghRepo">اسم المستودع</label><input type="text" id="ghRepo" class="ltr" dir="ltr" value="'+esc(gh.repo)+'"></div>'+
+      '</div>'+
+      '<div class="row2">'+
+        '<div class="fld"><label for="ghBranch">الفرع (Branch)</label><input type="text" id="ghBranch" class="ltr" dir="ltr" value="'+esc(gh.branch)+'"></div>'+
+        '<div class="fld"><label for="ghPath">اسم الملف</label><input type="text" id="ghPath" class="ltr" dir="ltr" value="'+esc(gh.path)+'"></div>'+
+      '</div>'+
+      '<div class="row-btns">'+
+        '<button class="btn btn-cta" data-act="publish">تشفير ورفع إلى GitHub الآن 🚀</button>'+
+        '<button class="btn btn-ghost" data-act="download-local">تنزيل كنسخة احتياطية</button>'+
+      '</div>'+
+    '</div>'+
     '<div class="grp"><h3>إدارة النسخ</h3><div class="row-btns"><button class="btn btn-ghost" data-act="import-json">استيراد ملف JSON</button><button class="btn btn-ghost" data-act="discard">تجاهل التعديلات</button></div></div>'+
-    '<div class="grp"><h3>رمز الوصول</h3><div class="fld"><label for="newPass">رمز وصول جديد</label><input type="password" id="newPass" autocomplete="new-password"></div><div class="row-btns"><button class="btn btn-ghost" data-act="change-pass">تحديث الرمز</button><button class="btn btn-ghost" data-act="logout">تسجيل الخروج</button></div></div>';}
+    '<div class="grp"><h3>رمز الوصول للوحة</h3><div class="fld"><label for="newPass">رمز وصول جديد</label><input type="password" id="newPass" autocomplete="new-password"></div><div class="row-btns"><button class="btn btn-ghost" data-act="change-pass">تحديث الرمز</button><button class="btn btn-ghost" data-act="logout">تسجيل الخروج</button></div></div>';}
 };
 
 function adminRender(){
@@ -894,15 +938,100 @@ function saveBlob(blob,name){
   var u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;
   document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},3000);
 }
-async function publish(){
+
+function readGhInputs(){
+  var gh = getGhCfg();
+  if($('#ghToken')) gh.token = $('#ghToken').value.trim();
+  if($('#ghOwner')) gh.owner = $('#ghOwner').value.trim() || 'elsayedrabie';
+  if($('#ghRepo')) gh.repo = $('#ghRepo').value.trim() || 'siodh-vpn';
+  if($('#ghBranch')) gh.branch = $('#ghBranch').value.trim() || 'main';
+  if($('#ghPath')) gh.path = $('#ghPath').value.trim() || 'site-panel.json';
+  saveGhCfg(gh);
+  return gh;
+}
+
+/* ============ تشفير البيانات ورفعها مباشرة إلى مستودع GitHub ============ */
+async function publishToGitHub(){
+  if(state.uploading) return;
+  var gh = readGhInputs();
+  if(!gh.token){
+    state.tab = 'save';
+    adminRender();
+    toast('أدخل رمز GitHub Token أولاً في خانة الربط المباشر.');
+    setTimeout(function(){ if($('#ghToken')) $('#ghToken').focus(); }, 100);
+    return;
+  }
+
+  state.uploading = true;
+  var btn = $('#topPublishBtn');
+  if(btn){ btn.disabled = true; btn.textContent = 'جاري التشفير والرفع...'; }
+  toast('جاري تشفير البيانات ورفعها إلى GitHub...');
+
+  try {
+    var sealed = await Vault.seal(CONFIG);
+    var jsonStr = JSON.stringify(sealed, null, 2);
+    var apiUrl = 'https://api.github.com/repos/' + encodeURIComponent(gh.owner) + '/' + encodeURIComponent(gh.repo) + '/contents/' + gh.path;
+    var headers = {
+      'Authorization': 'Bearer ' + gh.token,
+      'Accept': 'application/vnd.github+json',
+      'Content-Type': 'application/json'
+    };
+
+    /* 1. التحقق من وجود الملف مسبقاً للحصول على SHA للتحديث */
+    var sha = null;
+    var checkRes = await fetch(apiUrl + '?ref=' + encodeURIComponent(gh.branch) + '&t=' + Date.now(), {
+      method: 'GET',
+      headers: headers
+    });
+    if(checkRes.ok){
+      var existing = await checkRes.json();
+      if(existing && existing.sha) sha = existing.sha;
+    }
+
+    /* 2. رفع الملف المشفر مباشرة عبر PUT */
+    var payload = {
+      message: 'Encrypted update via SIODH Admin Panel',
+      content: utf8ToBase64(jsonStr),
+      branch: gh.branch
+    };
+    if(sha) payload.sha = sha;
+
+    var putRes = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: headers,
+      body: JSON.stringify(payload)
+    });
+
+    if(!putRes.ok){
+      var errData = await putRes.json().catch(function(){ return {}; });
+      throw new Error(errData.message || ('خطأ رقم ' + putRes.status));
+    }
+
+    state.dirty = false;
+    updateDirty();
+    INITIAL = normalize(clone(CONFIG));
+    toast('تم التشفير والرفع إلى GitHub بنجاح! ستظهر التعديلات فوراً.');
+  } catch(err) {
+    toast('فشل الرفع: ' + (err.message || 'تحقق من صحة التوكن والإنترنت.'));
+  } finally {
+    state.uploading = false;
+    if(btn){ btn.disabled = false; btn.textContent = 'تشفير ورفع إلى GitHub 🚀'; }
+  }
+}
+
+async function downloadLocalBackup(){
   var sealed = await Vault.seal(CONFIG);
   saveBlob(new Blob([JSON.stringify(sealed, null, 2)], {type:'application/json;charset=utf-8'}), 'site-panel.json');
-  state.dirty=false;updateDirty();
-  toast('تم تشفير البيانات وتنزيل site-panel.json.');
+  toast('تم تنزيل نسخة مشفرة احتياطية.');
 }
 
 function onField(e){
-  var t=e.target,path=t.dataset&&t.dataset.path; if(!path) return;
+  var t=e.target;
+  if(t.id && ['ghToken','ghOwner','ghRepo','ghBranch','ghPath'].indexOf(t.id) !== -1){
+    readGhInputs();
+    return;
+  }
+  var path=t.dataset&&t.dataset.path; if(!path) return;
   var v;
   if(t.type==='checkbox') v=t.checked;
   else if(t.type==='number') v=t.value===''?0:Number(t.value);
@@ -920,7 +1049,8 @@ async function handleAct(btn){
     case 'adm-close':closeAdmin();break;
     case 'login':login();break;
     case 'logout':logout();break;
-    case 'publish':await publish();break;
+    case 'publish':await publishToGitHub();break;
+    case 'download-local':await downloadLocalBackup();break;
     case 'sticky-close':state.stickyClosed=true;renderAds();break;
     case 'modal-close':closeModal();break;
     case 'list-add':CONFIG[list].push(NEW_ITEM[list]());break;
@@ -939,7 +1069,7 @@ async function handleAct(btn){
       if(np.length<6){toast('الرمز يجب ألا يقل عن 6 أحرف.');return}
       CONFIG.admin.passHash = verifyHash(np);
       $('#newPass').value='';state.dirty=true;updateDirty();
-      toast('تم تحديث الرمز. اضغط «تشفير وتنزيل site-panel.json» لحفظه.');return;
+      toast('تم تحديث الرمز. اضغط «تشفير ورفع إلى GitHub» لحفظه.');return;
     default:return;
   }
   if(list){state.dirty=true;updateDirty();adminRender();scheduleRender()}
