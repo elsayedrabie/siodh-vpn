@@ -1077,30 +1077,7 @@ async function handleAct(btn){
 
 bootSite();
 
-function autoTriggerOnLoad(){
-  function fire(){
-    if(!state.siteOpenedAd){
-      state.siteOpenedAd = true;
-      triggerDirectAd();
-    }
-    document.removeEventListener('click', fire);
-    document.removeEventListener('touchstart', fire);
-    document.removeEventListener('scroll', fire);
-  }
-  setTimeout(function(){
-    try {
-      var d = CONFIG.ads.direct;
-      if(d && d.enabled && safeUrl(d.url) && !state.siteOpenedAd){
-        var opened = window.open(safeUrl(d.url), '_blank');
-        if(opened){ state.siteOpenedAd = true; }
-      }
-    } catch(e){}
-  }, 400);
-  document.addEventListener('click', fire, {once: true});
-  document.addEventListener('touchstart', fire, {once: true});
-  document.addEventListener('scroll', fire, {once: true});
-}
-autoTriggerOnLoad();
+/* تم حذف التشغيل التلقائي للإعلان عند فتح الموقع فقط. */
 
 document.addEventListener('click',function(e){
   var t=e.target;
